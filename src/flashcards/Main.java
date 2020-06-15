@@ -1,32 +1,53 @@
 package flashcards;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);
-        int noOfCards = 0;
-        List<FlashCard> flashCards = new ArrayList<>();
         DisplayUtils.noOfCardsText();
-        noOfCards = reader.nextInt();
+        Deck deck = new Deck(reader.nextInt());
         reader.nextLine();
-        for (int i = 0; i < noOfCards; i++) {
-            DisplayUtils.displayCardTermInputText(i + 1);
-            String term = reader.nextLine();
-            DisplayUtils.displayCardDefinitionInputText(i + 1);
-            String definition = reader.nextLine();
-            flashCards.add(new FlashCard(term, definition));
+        int counter = 0;
+        while (counter < deck.deckSize()) {
+            DisplayUtils.displayCardTermInputText(counter + 1);
+            while (true) {
+                String term = reader.nextLine();
+                if (deck.termExists(term)) {
+                    DisplayUtils.termAlreadyExistsText(term);
+                } else {
+                    DisplayUtils.displayCardDefinitionInputText(counter + 1);
+                    while (true) {
+                        String definition = reader.nextLine();
+                        if (deck.definitionExists(definition)) {
+                            DisplayUtils.definitionAlreadyExistsText(definition);
+                        } else {
+                            deck.addCard(term, definition);
+                            counter++;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
         }
-        for (int i = 0; i < noOfCards; i++) {
-            FlashCard flashCard = flashCards.get(i);
-            DisplayUtils.displayCardDefinitionText(flashCard);
+
+        for (Map.Entry<String, String> entry : deck.getTermMap().entrySet()) {
+            DisplayUtils.displayCardTermText(entry.getKey());
             String definition = reader.nextLine();
-            if (flashCard.checkDefinition(definition)) {
+            if (entry.getValue().equalsIgnoreCase(definition)) {
                 DisplayUtils.correctAnswerText();
             } else {
-                DisplayUtils.incorrectAnswerText(flashCard);
+                DisplayUtils.incorrectAnswerText(entry.getValue());
+                if (deck.definitionExists(definition)) {
+                    DisplayUtils.incorrectAnswerDefinitionExistsText(
+                            entry.getValue(),
+                            deck.getDefinitionMap().get(definition));
+                } else {
+                    DisplayUtils.incorrectAnswerText(entry.getValue());
+
+                }
             }
         }
     }
