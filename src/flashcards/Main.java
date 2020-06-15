@@ -39,7 +39,6 @@ public class Main {
             if (entry.getValue().equalsIgnoreCase(definition)) {
                 DisplayUtils.correctAnswerText();
             } else {
-                DisplayUtils.incorrectAnswerText(entry.getValue());
                 if (deck.definitionExists(definition)) {
                     DisplayUtils.incorrectAnswerDefinitionExistsText(
                             entry.getValue(),

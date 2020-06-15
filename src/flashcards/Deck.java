@@ -1,5 +1,6 @@
 package flashcards;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ public class Deck {
 
     public Deck(int noOfCards) {
         this.noOfCards = noOfCards;
+        termMap = new HashMap<>();
+        definitionMap = new HashMap<>();
     }
 
     public int deckSize() {
