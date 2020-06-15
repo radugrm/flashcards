@@ -2,6 +2,7 @@ package flashcards;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Deck {
@@ -12,8 +13,8 @@ public class Deck {
 
     public Deck(int noOfCards) {
         this.noOfCards = noOfCards;
-        termMap = new HashMap<>();
-        definitionMap = new HashMap<>();
+        termMap = new LinkedHashMap<>();
+        definitionMap = new LinkedHashMap<>();
     }
 
     public int deckSize() {
