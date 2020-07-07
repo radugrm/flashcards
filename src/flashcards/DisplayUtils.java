@@ -25,7 +25,7 @@ public class DisplayUtils {
     }
 
     public static String printCorrectAnswerText() {
-        String s = "Correct answer!";
+        String s = "Correct answer!\n";
         System.out.print(s);
         return s;
     }

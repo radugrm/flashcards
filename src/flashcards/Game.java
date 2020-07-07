@@ -14,12 +14,18 @@ public class Game {
     private int numberOfQuestions;
     private Map.Entry<String, String> card;
     private Logger logger = new Logger();
+    private String exportFileName = null;
 
-    public Game() {
-        logger.log(DisplayUtils.printMainMenuText());
+    public Game(String importFileName, String exportFileName) {
         deck = new Deck();
         state = State.MAIN_MENU;
         numberOfQuestions = 0;
+        this.exportFileName = exportFileName;
+        if (importFileName != null) {
+            processImportCards(importFileName);
+        } else {
+            logger.log(DisplayUtils.printMainMenuText());
+        }
     }
 
     public void processInput(String input) {
@@ -50,7 +56,11 @@ public class Game {
                 state = State.ASK;
                 break;
             case "exit":
-                logger.log(DisplayUtils.printAdiosMessage());
+                if (exportFileName == null) {
+                    logger.log(DisplayUtils.printAdiosMessage());
+                } else {
+                    processExportCards(exportFileName, true);
+                }
                 isOn = false;
                 break;
             case "hardest card":
@@ -112,7 +122,7 @@ public class Game {
         changeStateToMainMenu();
     }
 
-    public void processExportCards(String input) {
+    public void processExportCards(String input, boolean exportBeforeExit) {
         try {
             int cardsExported = deck.exportDeckToFile(input);
             logger.log(DisplayUtils.printCardsExported(cardsExported));
@@ -120,7 +130,9 @@ public class Game {
             logger.log(DisplayUtils.printExportFailedText());
             e.printStackTrace();
         }
-        changeStateToMainMenu();
+        if (!exportBeforeExit) {
+            changeStateToMainMenu();
+        }
     }
 
     public void processAsk(String input) {

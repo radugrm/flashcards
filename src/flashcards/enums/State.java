@@ -36,7 +36,7 @@ public enum State {
     EXPORT {
         @Override
         public void moveOn(Game game, String input) {
-            game.processExportCards(input);
+            game.processExportCards(input, false);
         }
     },
     ASK {
