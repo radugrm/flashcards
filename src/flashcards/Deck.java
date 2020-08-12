@@ -35,16 +35,14 @@ public class Deck {
     }
 
     public void removeCardByTerm(String term) {
-        String definition = termMap.get(term);
-        termMap.remove(term);
+        String removedDefinition = termMap.remove(term);
         termMapIterator = null;
-        definitionMap.remove(definition);
+        definitionMap.remove(removedDefinition);
         mistakesMap.remove(term);
     }
 
     public int exportDeckToFile(String filename) throws IOException {
         FileWriter myWriter = new FileWriter(filename);
-        int cardsExported = 0;
         try {
             Iterator<Map.Entry<String, String>> it = termMap.entrySet().iterator();
             while (it.hasNext()) {
@@ -54,13 +52,10 @@ public class Deck {
                 if (it.hasNext()) {
                     myWriter.write("\n");
                 }
-                cardsExported++;
             }
+            return termMap.size();
+        } finally {
             myWriter.close();
-            return cardsExported;
-        } catch (IOException e) {
-            myWriter.close();
-            throw e;
         }
     }
 
@@ -100,7 +95,7 @@ public class Deck {
     }
 
     public Integer getMaxMistakes() {
-        return mistakesMap == null || mistakesMap.isEmpty() ? 0 : Collections.max(mistakesMap.values());
+        return (mistakesMap == null || mistakesMap.isEmpty()) ? 0 : Collections.max(mistakesMap.values());
     }
 
     public List<String> getHardestCards() {

@@ -11,8 +11,7 @@ public class Main {
             if ("-import".equals(args[i]) && i+1 < args.length) {
                 importFileName = args[i+1];
                 i++;
-            }
-            if ("-export".equals(args[i]) && i+1 < args.length) {
+            } else if ("-export".equals(args[i]) && i+1 < args.length) {
                 exportFileName = args[i+1];
                 i++;
             }

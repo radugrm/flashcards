@@ -56,10 +56,9 @@ public class Game {
                 state = State.ASK;
                 break;
             case "exit":
-                if (exportFileName == null) {
-                    logger.log(DisplayUtils.printAdiosMessage());
-                } else {
-                    processExportCards(exportFileName, true);
+                logger.log(DisplayUtils.printAdiosMessage());
+                if (exportFileName != null && exportFileName.trim().length() != 0) {
+                    exportToFile(exportFileName);
                 }
                 isOn = false;
                 break;
@@ -122,16 +121,18 @@ public class Game {
         changeStateToMainMenu();
     }
 
-    public void processExportCards(String input, boolean exportBeforeExit) {
+    public void processExportCards(String input) {
+        exportToFile(input);
+        changeStateToMainMenu();
+    }
+
+    private void exportToFile(String input) {
         try {
             int cardsExported = deck.exportDeckToFile(input);
             logger.log(DisplayUtils.printCardsExported(cardsExported));
         } catch (IOException e) {
             logger.log(DisplayUtils.printExportFailedText());
             e.printStackTrace();
-        }
-        if (!exportBeforeExit) {
-            changeStateToMainMenu();
         }
     }
 
